@@ -1,0 +1,137 @@
+version: '2'
+services:
+ mongo:
+   image: 'bitnami/mongodb:latest'
+   ports:
+     - "27017:27017"
+   environment:
+     - MONGO_INITDB_ROOT_USERNAME=sense
+     - MONGO_INITDB_ROOT_PASSWORD=sense
+   volumes:
+     - 'mongodb_data:/bitnami'
+   restart: always
+   logging:
+     driver: "json-file"
+     options:
+       max-size: "17000m"
+       max-file: "5"
+ mysql:
+   image: 'mysql:5.6'
+   restart: always
+   ports:
+      - "3307:3306"
+   environment:
+      - MYSQL_ROOT_PASSWORD=root
+   volumes:
+     - 'mysql_data:/var/lib/mysql'
+   logging:
+     driver: "json-file"
+     options:
+       max-size: "17000m"
+       max-file: "5"
+ redis:
+   image: 'redis:3.0.6'
+   environment:
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+   ports:
+      - '6379:6379'
+   volumes:
+      - 'redis_data:/var/lib/redis/data'
+   restart: always
+   logging:
+     driver: "json-file"
+     options:
+       max-size: "17000m"
+       max-file: "5"
+
+#  zookeeper:
+#    image: wurstmeister/zookeeper
+ 
+#  kafka: #https://linuxhint.com/docker_compose_kafka/
+#    image: wurstmeister/kafka
+#    ports:
+#     - "9092:9092"
+#    environment:
+#     - KAFKA_ADVERTISED_HOST_NAME=localhost
+#     - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+#  postgres:
+#    image: postgres:latest
+#    restart: always
+#    ports:
+#      - '5432:5432'
+#    environment:
+#      - POSTGRES_PASSWORD=password
+#    volumes:
+#      - 'postgres_data:/var/lib/postgresql/data'
+#    logging:
+#      driver: "json-file"
+#      options:
+#        max-size: "17000m"
+#        max-file: "5"
+#  elasticsearch:
+#    image: 'elasticsearch:5.4.3'
+#    restart: always
+#    ports:
+#      - '9200:9200'
+#      - '9300:9300'
+#    volumes:
+#      - 'elasticsearch_data:/var/lib/elasticsearch/data'
+#    logging:
+#      driver: "json-file"
+#      options:
+#        max-size: "17000m"
+#        max-file: "5"
+#  rabbitmq:
+#    image: 'bitnami/rabbitmq:3.7'
+#    restart: always
+#    ports:
+#      - '5672:5672'
+#      - '15672:15672'
+#    volumes:
+#      - 'rabbitmq_data:/bitnami'
+#    logging:
+#      driver: "json-file"
+#      options:
+#        max-size: "17000m"
+#        max-file: "5"
+#  kibana:
+#    image: 'kibana:5.4.3'
+#    restart: always
+#    ports:
+#      - 5601:5601
+#    environment:
+#      - KIBANA_ELASTICSEARCH_URL=elasticsearch
+#    volumes:
+#      - 'kibana_data:/var/lib/kibana/data'
+#    depends_on:
+#      - elasticsearch
+#  logstash:
+#    image: docker.elastic.co/logstash/logstash:5.4.3
+#    restart: always
+#    ports:
+#      - "5959:5959"
+#    volumes:
+#          - 'logstash_data:/var/lib/logstash/data'
+#    depends_on:
+#      - elasticsearch
+#    links:
+#      - elasticsearch
+
+
+volumes:
+  mongodb_data:
+   driver: local
+  mysql_data:
+   driver: local
+  redis_data:
+   driver: local
+  # postgres_data:
+  #  driver: local
+  # elasticsearch_data:
+  #   driver: local
+  # rabbitmq_data:
+  #   driver: local
+  # kibana_data:
+  #   driver: local
+  # logstash_data:
+  #   driver: local
